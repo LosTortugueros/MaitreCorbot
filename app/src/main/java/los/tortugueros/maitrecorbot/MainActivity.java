@@ -39,6 +39,6 @@ public class MainActivity extends ActionBarActivity implements OnMessageReceived
 
     @Override
     public void onMessage(String message) {
-
+        //TODO : take a photo with the camera
     }
 }
