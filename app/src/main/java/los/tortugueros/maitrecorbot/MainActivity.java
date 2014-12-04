@@ -12,6 +12,8 @@ public class MainActivity extends ActionBarActivity implements OnMessageReceived
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.
+
     }
 
 
@@ -40,5 +42,6 @@ public class MainActivity extends ActionBarActivity implements OnMessageReceived
     @Override
     public void onMessage(String message) {
         //TODO : take a photo with the camera
+
     }
 }
