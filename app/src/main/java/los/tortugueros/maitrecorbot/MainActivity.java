@@ -1,18 +1,48 @@
 package los.tortugueros.maitrecorbot;
 
+import android.app.Activity;
+import android.hardware.Camera;
+import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Surface;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.Window;
+import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import java.io.IOException;
+import java.net.SocketException;
 
-public class MainActivity extends ActionBarActivity implements OnMessageReceived {
+//Suppress warning for Camera API deprecated. Camera2 is only available for Lollipop devices
+@SuppressWarnings("deprecation")
+public class MainActivity extends Activity implements OnMessageReceived, SurfaceHolder.Callback {
 
+    private ListeningServer mListeningServer;
+    private Camera mCamera;
+    private CameraPreview mPreview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.activity_main);
-        this.
+        mCamera = Camera.open(1);
+        FrameLayout layout = (FrameLayout) findViewById(R.id.camera_preview);
+        CameraPreview mPreview = new CameraPreview(this,mCamera);
+        layout.addView(mPreview);
+        try {
+            this.mListeningServer = new ListeningServer(this);
+            mListeningServer.start();
+        } catch (SocketException e) {
+            Toast.makeText(this,"Couldn't start server",Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
 
     }
 
@@ -40,8 +70,30 @@ public class MainActivity extends ActionBarActivity implements OnMessageReceived
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        mCamera.release();
+    }
+
+    @Override
     public void onMessage(String message) {
         //TODO : take a photo with the camera
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
 
     }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+
+    }
+
+
 }
