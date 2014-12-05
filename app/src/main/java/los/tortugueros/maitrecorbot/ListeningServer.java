@@ -39,7 +39,7 @@ public final class ListeningServer extends Thread{
     private ListeningServer(OnMessageReceived callback) throws SocketException, UnknownHostException {
         tCallback = callback;
         aShouldRun =true;
-        rListeningSocket =new DatagramSocket(Conf.PORT, InetAddress.getByName(Conf.IP));
+        rListeningSocket =new DatagramSocket(Conf.PORT);
         aBuffer = new byte[2048];
         cPacket = new DatagramPacket(aBuffer, aBuffer.length);
       //e

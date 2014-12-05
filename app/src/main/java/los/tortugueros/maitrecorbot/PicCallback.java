@@ -33,7 +33,7 @@ public class PicCallback implements Camera.PictureCallback {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        camera.startPreview();
+//        camera.startPreview();
     }
 
 
