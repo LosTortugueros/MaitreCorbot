@@ -40,8 +40,11 @@ public class MainActivity extends Activity implements OnMessageReceived {
         CameraPreview mPreview = new CameraPreview(this,mCamera);
         layout.addView(mPreview);
         try {
-            this.mListeningServer = new ListeningServer(this);
-            mListeningServer.start();
+            this.mListeningServer = ListeningServer.getInstance(this);
+            if(!mListeningServer.isAlive())
+                mListeningServer.start();
+            else
+                mListeningServer.updateCallback(this);
         } catch (Exception e) {
             Toast.makeText(this,"Couldn't start server",Toast.LENGTH_LONG).show();
             e.printStackTrace();
