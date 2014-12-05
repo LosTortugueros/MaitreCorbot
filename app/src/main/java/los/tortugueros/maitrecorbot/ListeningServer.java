@@ -42,8 +42,8 @@ public final class ListeningServer extends Thread{
         rListeningSocket =new DatagramSocket(Conf.PORT, InetAddress.getByName(Conf.IP));
         aBuffer = new byte[2048];
         cPacket = new DatagramPacket(aBuffer, aBuffer.length);
-        rListeningSocket.setBroadcast(true);
       //e
+        rListeningSocket.setBroadcast(true);
     }
 
 
