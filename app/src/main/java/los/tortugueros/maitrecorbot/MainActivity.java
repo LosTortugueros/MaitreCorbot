@@ -1,6 +1,7 @@
 package los.tortugueros.maitrecorbot;
 
 import android.app.Activity;
+import android.graphics.Picture;
 import android.hardware.Camera;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
@@ -16,21 +17,23 @@ import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.SocketException;
 
 //Suppress warning for Camera API deprecated. Camera2 is only available for Lollipop devices
 @SuppressWarnings("deprecation")
-public class MainActivity extends Activity implements OnMessageReceived, SurfaceHolder.Callback {
+public class MainActivity extends Activity implements OnMessageReceived {
 
     private ListeningServer mListeningServer;
     private Camera mCamera;
     private CameraPreview mPreview;
+    private Camera.PictureCallback pictureCallback;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
+        pictureCallback = new PicCallback();
         setContentView(R.layout.activity_main);
         mCamera = Camera.open(1);
         FrameLayout layout = (FrameLayout) findViewById(R.id.camera_preview);
@@ -39,13 +42,12 @@ public class MainActivity extends Activity implements OnMessageReceived, Surface
         try {
             this.mListeningServer = new ListeningServer(this);
             mListeningServer.start();
-        } catch (SocketException e) {
+        } catch (Exception e) {
             Toast.makeText(this,"Couldn't start server",Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -73,27 +75,13 @@ public class MainActivity extends Activity implements OnMessageReceived, Surface
     protected void onStop() {
         super.onStop();
         mCamera.release();
+        mListeningServer.stopThread();
     }
 
     @Override
     public void onMessage(String message) {
-        //TODO : take a photo with the camera
+        Log.d("OMG", "picture taken");
+        mCamera.takePicture(null,null,pictureCallback);
     }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-
-    }
-
 
 }
