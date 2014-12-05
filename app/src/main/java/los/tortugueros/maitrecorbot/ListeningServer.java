@@ -5,9 +5,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
@@ -41,7 +39,7 @@ public final class ListeningServer extends Thread{
     private ListeningServer(OnMessageReceived callback) throws SocketException, UnknownHostException {
         tCallback = callback;
         aShouldRun =true;
-        rListeningSocket =new DatagramSocket(Conf.PORT, InetAddress.getByName("10.32.3.71"));
+        rListeningSocket =new DatagramSocket(Conf.PORT, InetAddress.getByName(Conf.IP));
         aBuffer = new byte[2048];
         cPacket = new DatagramPacket(aBuffer, aBuffer.length);
         rListeningSocket.setBroadcast(true);
